@@ -1,0 +1,44 @@
+PS D:\DevProjects\Java\SplitwiseApp> tree /F                                                                                                                         
+Folder PATH listing for volume Stuff
+Volume serial number is BCD3-47E8
+D:.
+├───lib
+│       junit-platform-console-standalone-1.10.0.jar
+│       
+├───out
+│   └───com
+│       └───splitwise
+│           │   SplitwiseApp.class
+│           │   SplitwiseTest.class
+│           │   
+│           ├───model
+│           │       Expense.class
+│           │       ExpenseSplitType.class
+│           │       Group.class
+│           │       Split.class
+│           │       User.class
+│           │       
+│           └───service
+│                   BalanceCalculator.class
+│                   SettlementEngine.class
+│                   
+├───src
+│   └───com
+│       └───splitwise
+│           │   SplitwiseApp.java
+│           │   
+│           ├───model
+│           │       Expense.java
+│           │       ExpenseSplitType.java
+│           │       Group.java
+│           │       Split.java
+│           │       User.java
+│           │       
+│           └───service
+│                   BalanceCalculator.java
+│                   SettlementEngine.java
+│                   
+└───test
+    └───com
+        └───splitwise
+                SplitwiseTest.java

@@ -1,0 +1,92 @@
+@startuml
+!theme plain
+skinparam componentStyle uml2
+skinparam backgroundColor transparent
+left to right direction
+
+' ==================== VIEW COMPONENTS ====================
+package "View" {
+  [Student Dashboard] as StudentView
+  [Faculty Dashboard] as FacultyView
+  [Security Console] as SecurityView
+  [Admin Panel] as AdminView
+  
+  note right of StudentView : Students: registration,\ngrades, housing, meal plan
+  note right of FacultyView : Faculty: grade entry,\nclass lists, room changes
+}
+
+' ==================== CONTROLLER COMPONENTS ====================
+package "Controller" {
+  [Registration Controller] as RegCtrl
+  [Security Controller] as SecCtrl
+  [Notification Controller] as NotifCtrl
+  [Access Control Controller] as AccessCtrl
+}
+
+' ==================== MODEL COMPONENTS ====================
+package "Model" {
+  [Student] as StudentModel
+  [Faculty] as FacultyModel
+  [Course] as CourseModel
+  [Security Event] as SecEventModel
+  [Emergency Alert] as AlertModel
+  
+  database "Legacy DB\n(Student Info System)" as LegacyDB
+  cloud "Camera Stream\n(Real-time Feed)" as CameraStream
+}
+
+' ==================== INTERFACES (optional but clean) ====================
+() "Authentication" as AuthInterface
+() "Notification Push" as PushInterface
+
+' ==================== ARROWS (Data & Control Flow) ====================
+' View → Controller (control flow)
+StudentView --> RegCtrl : "register, drop, view grades"
+FacultyView --> RegCtrl : "enter grades"
+SecurityView --> SecCtrl : "select camera, analyse motion"
+AdminView --> AccessCtrl : "manage roles"
+
+' Controller → Model (data flow)
+RegCtrl --> StudentModel : "update enrollment"
+RegCtrl --> CourseModel : "check capacity"
+RegCtrl --> LegacyDB : "persist changes"
+SecCtrl --> SecEventModel : "create event"
+SecCtrl --> NotifCtrl : "trigger alert (high threat)"
+NotifCtrl --> AlertModel : "create alert"
+AccessCtrl --> StudentModel : "verify role"
+AccessCtrl --> FacultyModel : "verify role"
+
+' Model → View (data flow – push notifications)
+AlertModel --> PushInterface : "emergency message"
+PushInterface <.. StudentView : "WebSocket push"
+PushInterface <.. FacultyView : "WebSocket push"
+
+' External interfaces to Model
+CameraStream --> SecCtrl : "continuous frames (UDP/RTSP)"
+LegacyDB <-- RegCtrl : "SQL/JPA"
+
+' Security console also reads events
+SecEventModel --> SecurityView : "real-time threat status"
+
+' Note for high availability
+note bottom of NotifCtrl
+  **HA decision:** persistent message queue
+  ensures 30 sec alert delivery even
+  under partial failure
+end note
+
+' ==================== ADDITIONAL DECORATIONS ====================
+' Group critical real-time components
+node "Real-time Processing Zone" {
+  [Security Controller]
+  [Notification Controller]
+  cloud "Camera Stream"
+}
+
+' Show dependency on authentication interface
+StudentView ..> AuthInterface : "uses"
+FacultyView ..> AuthInterface : "uses"
+AdminView ..> AuthInterface : "uses"
+AccessCtrl --> AuthInterface : "validates token"
+
+@enduml

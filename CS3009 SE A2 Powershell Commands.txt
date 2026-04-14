@@ -1,0 +1,17 @@
+PS D:\DevProjects\Java\SplitwiseApp>
+mkdir src\com\splitwise\model
+mkdir src\com\splitwise\service
+mkdir lib
+mkdir test\com\splitwise
+
+----------------------------------------------------------------------------------------------------
+PS D:\DevProjects\Java\SplitwiseApp>javac -d out -sourcepath src src\com\splitwise\model\*.java src\com\splitwise\service\*.java src\com\splitwise\SplitwiseApp.java
+
+----------------------------------------------------------------------------------------------------
+PS D:\DevProjects\Java\SplitwiseApp>java -cp out com.splitwise.SplitwiseApp
+
+----------------------------------------------------------------------------------------------------
+javac -d out -cp "lib\*;src" -sourcepath src src\com\splitwise\model\*.java src\com\splitwise\service\*.java src\com\splitwise\SplitwiseApp.java test\com\splitwise\SplitwiseTest.java
+
+----------------------------------------------------------------------------------------------------
+PS D:\DevProjects\Java\SplitwiseApp>java -jar lib\junit-platform-console-standalone-1.10.0.jar -cp out --scan-class-path
